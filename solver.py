@@ -15,9 +15,9 @@ class MazeSolver:
         self.DIR_IN = "./mazes"
         if not os.path.exists(self.DIR_OUT):
             os.mkdir(self.DIR_OUT)
-            logging.info("Creating out directory {}".format(self.DIR_OUT))
+            logging.info("Diretorio de saida criado {}".format(self.DIR_OUT))
         if not os.path.exists(self.tmp_dir):
-            logging.info("Creating tmp directory {}".format(self.tmp_dir))
+            logging.info("Diretorio temporario criado {}".format(self.tmp_dir))
             os.makedirs(self.tmp_dir)
         ext = self.path.split('.')[-1]            
         self.file_in = os.path.join(self.DIR_IN, os.path.basename(self.path))
@@ -38,7 +38,7 @@ class MazeSolver:
         self.pixels = self.image.load()
         self.START = (400,984)
         self.END = (398,25)
-        logging.info("Loaded image '{}' ({} pixels)".format(self.path,self.image.size))
+        logging.info("Imagem carregada '{}' ({} pixels)".format(self.path,self.image.size))
 
     def purifyImage(self,save=False):
         limit = 256/2 #cores vao de 0 a 255, logo 128 é a metade
@@ -62,16 +62,16 @@ class MazeSolver:
             for j in range(size[1]):
                 _pixels[i,j] = pixels[i,j]
         out.save(file_out)
-        logging.info("Saved pure image '{}' ({} pixels)".format(file_out,out.size))
+        logging.info("Imagem pura salva '{}' ({} pixels)".format(file_out,out.size))
 
     def show(self,image):
         image.show()
 
     def solve(self,pure_pixels):
-        logging.info('Solving...')
+        logging.info('Resolvendo...')
         path = self.BFS(self.START,self.END,pure_pixels)
         if path is None:
-            logging.error("No path found")
+            logging.error("Nenhum caminho encontrado")
             self.color(self.START,self.start_color)
             self.color(self.END,self.end_color)
         else:
@@ -79,7 +79,7 @@ class MazeSolver:
                 x,y = position
                 self.pixels[x,y] = self.colors['red']
         self.image.save(self.file_out)
-        logging.info("Solution save as '{}'".format(self.file_out))
+        logging.info("Solução salva como '{}'".format(self.file_out))
 
     def BFS(self,START,END,pure_pixels):
         image = self.image.copy()
@@ -143,7 +143,7 @@ class MazeSolver:
         for filename in filenames:
             images.append(imageio.imread(self.tmp_dir + filename))
         imageio.mimwrite(self.DIR_OUT + "/" + self.path.split(".")[0] + ".gif", images)
-        logging.info("GIF CREATED")
+        logging.info("GIF BFS criada")
 if __name__ == "__main__":
     SOLVER = MazeSolver("maze1.jpg")
     pure = SOLVER.purifyImage()
